@@ -2,7 +2,7 @@
 
 <!-- saved from url=(0052)https://cestlaviesisyphus.github.io/Bedroom-Planner/ -->
 <html lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-<title>Bedroom Layout Planner – v12.4</title>
+<title>Bedroom Layout Planner – v12.2.1</title>
 <style>
     /* ——— Layout & basic UI ——— */
     *{box-sizing:border-box}
@@ -50,7 +50,7 @@
 <body>
 <!-- ── Main column (canvas & global buttons) ── -->
 <div style="display:flex;flex-direction:column;align-items:center;gap:.75rem">
-<h1 style="font-size:1.25rem;margin:0;font-weight:600">Bedroom Layout Planner v12.4<br/>(12 × 10 ft room • 45 × 24 in closet)</h1>
+<h1 style="font-size:1.25rem;margin:0;font-weight:600">Bedroom Layout Planner v12.2.1<br/>(12 × 10 ft room • 45 × 24 in closet)</h1>
 <canvas height="720" id="stage" width="720"></canvas>
 <div style="display:flex;gap:.75rem">
 <button id="savePng">Save PNG</button>
@@ -105,6 +105,52 @@
 </label>
 </div><div id="inventorySheet" style="margin-top:1rem; display:none; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:4px; padding:.25rem;"></div></div></div></div>
 <script>
+document.getElementById("downloadInventory").addEventListener("click", () => {
+  const w = window.open("", "_blank");
+  const rows = items.map(it => {
+    const colorCell = `<td><div style='background:${it.color};padding:4px;border-radius:3px;text-align:center;'>${it.color}</div></td>`;
+    return `
+      <tr>
+        <td>${it.label || ""}</td>
+        <td>${inch(it.w).toFixed(1)}</td>
+        <td>${inch(it.h).toFixed(1)}</td>
+        ${colorCell}
+        <td>${it.note || ""}</td>
+      </tr>
+    `;
+  }).join("");
+
+  const html = `
+    <html>
+    <head>
+      <title>Inventory Sheet</title>
+      <style>
+        body { font-family: sans-serif; padding: 2rem; }
+        table { border-collapse: collapse; width: 100%; font-size: 12px; }
+        th, td { border: 1px solid #ccc; padding: 4px; }
+        th { background: #f1f5f9; }
+        h2 { margin-bottom: 1rem; }
+      </style>
+    </head>
+    <body>
+      <h2>Inventory Sheet</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Label</th><th>Width (in)</th><th>Height (in)</th><th>Color</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </body>
+    </html>
+  `;
+
+  w.document.write(html);
+  w.document.close();
+});
+
+
 document.getElementById("downloadInventory").addEventListener("click", () => {
   const w = window.open("", "_blank");
   const rows = items.map(it => {
