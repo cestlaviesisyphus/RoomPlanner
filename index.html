@@ -2,7 +2,7 @@
 
 <!-- saved from url=(0052)https://cestlaviesisyphus.github.io/Bedroom-Planner/ -->
 <html lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-<title>Bedroom Layout Planner – v12.2.text</title>
+<title>Bedroom Layout Planner – v12.2.export</title>
 <style>
     /* ——— Layout & basic UI ——— */
     *{box-sizing:border-box}
@@ -34,7 +34,7 @@
 <body>
 <!-- ── Main column (canvas & global buttons) ── -->
 <div style="display:flex;flex-direction:column;align-items:center;gap:.75rem">
-<h1 style="font-size:1.25rem;margin:0;font-weight:600">Bedroom Layout Planner v12.2.text<br/>(12 × 10 ft room • 45 × 24 in closet)</h1>
+<h1 style="font-size:1.25rem;margin:0;font-weight:600">Bedroom Layout Planner v12.2.export<br/>(12 × 10 ft room • 45 × 24 in closet)</h1>
 <canvas height="720" id="stage" width="720"></canvas>
 <div style="display:flex;gap:.75rem">
 <button id="savePng">Save PNG</button>
@@ -982,6 +982,32 @@ document.getElementById("downloadInventory").addEventListener("click", () => {
   }).join("\n\n");
 
   const blob = new Blob([lines], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "InventorySheet.txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+
+
+document.getElementById("downloadInventory").addEventListener("click", () => {
+  if (!items || items.length === 0) {
+    alert("No inventory items to export.");
+    return;
+  }
+
+  let text = "Inventory Sheet\n\n";
+  for (const it of items) {
+    text += `Label: ${it.label || ""}\n`;
+    text += `Width: ${inch(it.w).toFixed(1)} in\n`;
+    text += `Height: ${inch(it.h).toFixed(1)} in\n`;
+    text += `Color: ${it.color || ""}\n`;
+    text += `Notes: ${it.note || ""}\n`;
+    text += "-----------------------------\n";
+  }
+
+  const blob = new Blob([text], { type: "text/plain" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "InventorySheet.txt";
