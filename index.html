@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 
-<!-- saved from url=(0052)https://cestlaviesisyphus.github.io/Bedroom-Planner/ -->
 <html lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-<title>Bedroom Layout Planner – v12.2.export-1</title>
+<title>BASIC ROOM PLANNER V3.24</title>
 <style>
     /* ——— Layout & basic UI ——— */
     *{box-sizing:border-box}
@@ -34,8 +33,8 @@
 <body>
 <!-- ── Main column (canvas & global buttons) ── -->
 <div style="display:flex;flex-direction:column;align-items:center;gap:.75rem">
-<h1 style="font-size:1.25rem;margin:0;font-weight:600">Bedroom Layout Planner v12.2.export-1<br/>(12 × 10 ft room • 45 × 24 in closet)</h1>
-<canvas height="720" id="stage" width="720"></canvas>
+<h1 style="font-size:1.25rem;margin:0;font-weight:600">BASIC ROOM PLANNER V3.24</h1>
+<div id="sizeControls" style="display:flex;gap:.5rem;align-items:center;margin-bottom:.5rem"><span>Room (ft):</span><input id="roomW" min="1" style="width:60px" type="number" value="12"/><input id="roomH" min="1" style="width:60px" type="number" value="10"/><button id="applyRoom">Apply</button></div><div style="margin-bottom:.5rem; display:flex; gap:.5rem; align-items:center"><button id="zoomIn" title="Zoom In">+</button><button id="zoomOut" title="Zoom Out">−</button><button id="zoomReset" title="Reset Zoom">Reset</button></div><canvas height="720" id="stage" width="720"></canvas>
 <div style="display:flex;gap:.75rem">
 <button id="savePng">Save PNG</button>
 <button id="saveLayout">Save Layout</button>
@@ -44,37 +43,79 @@
 </div>
 </div>
 <!-- ── Side panel ── -->
-<div style="display:flex; gap:1rem; align-items:flex-start"><div style="display:flex;gap:1.5rem;align-items:flex-start"><div id="panel">
+<div style="display:flex; gap:1rem; align-items:flex-start"><div style="display:flex;gap:1.5rem;align-items:flex-start"><div style="display:flex; gap:1rem; align-items:flex-start"><div id="panel">
 <h2>Objects</h2>
 <fieldset style="border:1px solid #cbd5e1; padding:.5rem; border-radius:.5rem; display:flex; flex-direction:column; gap:.35rem">
 <legend style="font-size:.85rem; color:#0f172a; font-weight:600">Measurement Tools</legend>
-<label style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a">
-<input id="measureToggle" type="checkbox"/> Use Measurement Tool
-  </label>
-<small style="margin-left:1.5rem; font-size:.75rem; color:#475569">
-    Click two points to measure distance in inches &amp; feet.
-  </small>
-<label style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a">
-<input id="walkwayToggle" type="checkbox"/> Enable Walkway Validator
-  </label>
-<label style="font-size:.8rem;color:#475569;display:flex;align-items:center;gap:.5rem">
-    Min Walkway Width (in): <input id="walkwayMin" style="width:60px" type="number" value="24"/>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a; margin-top:.25rem;">
+  <input id="measureToggle" type="checkbox"/>
+  <label for="measureToggle">Use Measurement Tool</label>
+</div>
+<small style="margin-left:1.5rem;font-size:.65rem;color:#475569">
+  Click two points to measure distance in inches & feet. Click a again to remove.
+</small>
+
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a; margin-top:.25rem;">
+  <input id="walkwayToggle" type="checkbox"/>
+  <label for="walkwayToggle">Enable Walkway Validator</label>
+</div>
+<label for="walkwayMin"
+       style="display:flex;
+              flex-direction:row;
+              align-items:center;
+              gap:.5rem;
+              font-size:.65rem;
+              color:#475569;
+              margin-top:.25rem;">
+  <input id="walkwayMin" style="width:60px" type="number" value="24"/>
+  = Min Walkway Width (in)
 </label>
-<label style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:#475569">
+<label style="display:none;">
 <input id="walkwayLiveToggle" type="checkbox"/> Show Walkway Issues While Dragging
-  </label><small style="margin-left:1.5rem; font-size:.75rem; color:#64748b">Walkway Validator must be enabled</small>
+  </label><small style="display:none;">Walkway Validator must be enabled</small>
 </fieldset>
 <ul id="objList"><li class=""><div class="row"><span class="swatch" style="background: rgb(176, 196, 222);"></span>Twin XL Bed<button class="arrow" disabled="">↑</button><button class="arrow">↓</button></div><span class="dim">82×40″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(222, 184, 135);"></span>Nightstand 1<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">16×22″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(255, 228, 181);"></span>Long Dresser<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">20×70″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(167, 243, 208);"></span>Computer Chair<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">27×27″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(119, 113, 95);"></span>Computer Desk<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">46×22″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(97, 187, 194);"></span>Stand Up Dresser<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">32.50×19.50″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(167, 243, 208);"></span>Bookshelf<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">11.50×30″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(167, 243, 208);"></span>Old Night<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">16×29″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(167, 243, 208);"></span>Black Cube<button class="arrow">↑</button><button class="arrow">↓</button></div><span class="dim">12×16″</span></li><li class=""><div class="row"><span class="swatch" style="background: rgb(222, 184, 135);"></span>Nightstand 2<button class="arrow">↑</button><button class="arrow" disabled="">↓</button></div><span class="dim">22×16″</span></li></ul>
 <button id="addObj">➕ Add Object</button>
 <fieldset style="border:1px solid #cbd5e1; padding:.5rem; border-radius:.5rem; display:flex; flex-direction:column; gap:.35rem">
 <legend style="font-size:.85rem; color:#0f172a; font-weight:600">Object Tools</legend>
-<label style="font-size:.85rem;color:#0f172a;display:flex;align-items:center;gap:.5rem">
-<input checked="" id="gapToggle" type="checkbox"/> Show Gaps Between Objects
-</label><label style="font-size:.85rem;color:#0f172a;display:flex;align-items:center;gap:.5rem">
-<input checked="" id="noteToggle" type="checkbox"/> Show Object Notes
-</label></fieldset>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a;margin-top:.25rem;">
+  <input id="collisionAvoidance" type="checkbox"/>
+  <label for="collisionAvoidance">Object Collision Avoidance</label>
+</div>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a; margin-top:0.25rem;">
+  <input checked id="gapToggle" type="checkbox"/>
+  <label for="gapToggle">Show Gaps Between Objects</label>
+</div>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a; margin-top:0.25rem;">
+  <input checked id="noteToggle" type="checkbox"/>
+  <label for="noteToggle">Show Object Notes</label>
+</div>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a; margin-top:0.25rem;"><input id="lockObjects" type="checkbox"/><label for="lockObjects"> Lock Object Movement</label></div>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a;margin-top:.25rem;">
+  <input id="snapToInch" type="checkbox"/>
+  <label for="snapToInch">Snap to Closest Inch</label>
+</div>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a;margin-top:.25rem;">
+  <input id="snapToFoot" type="checkbox"/>
+  <label for="snapToFoot">Snap to Closest Foot</label>
+</div>
+<div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#0f172a;margin-top:.25rem;">
+  <label for="rotationInput">Rotation:</label>
+  <input
+    id="rotationInput"
+    type="number"
+    min="-360"
+    max="360"
+    step="1"
+    style="width:8ch;"
+  />
+  <span>°</span>
+  <!-- New reset button: -->
+  <button id="resetRotation" type="button" style="padding:.2rem .5rem;">⟳</button>
+</div>
+</fieldset>
 <div id="spaceInfo">Free space: 59.8 ft²  (8604 in²)</div>
-<div style="margin-top:.75rem; display:flex; gap:.5rem; padding:.5rem; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.5rem;"><button id="exportInventory" style="padding:.5rem; background:#2563eb; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Generate Inventory Sheet</button><button disabled id="downloadInventory" onclick="exportInventoryText()" style="padding:.5rem; background:#0f766e; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Export Inventory as Text</button></div></div><div style="display:flex;flex-direction:column;gap:1rem;align-items:flex-start"><div id="edit" style="display:none; flex-direction:column; gap:.5rem; border:1px solid #e2e8f0; border-radius:.5rem; padding:.75rem; min-width:220px">
+</div><div style="display:flex; flex-direction:column; gap:.75rem; align-items:flex-start"><div style="margin-top:.75rem; display:flex; gap:.5rem; padding:.5rem; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.5rem;"><button id="exportInventory" style="padding:.5rem; background:#2563eb; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Generate Inventory Sheet</button><button disabled="true" id="downloadInventory" style="padding:.5rem; background:#0f766e; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Export Inventory as Text</button></div><div id="inventorySheet" style="margin-top:1rem; display:none; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:4px; padding:.25rem;"></div></div></div><div style="display:flex;flex-direction:column;gap:1rem;align-items:flex-start"><div id="edit" style="display:none; flex-direction:column; gap:.5rem; border:1px solid #e2e8f0; border-radius:.5rem; padding:.75rem; min-width:220px">
 <h2 style="font-size:1rem">Edit Selected</h2>
 <label>Name <input id="nameInp"/></label>
 <label>Width (in) <input id="wInp" step="0.25" type="number"/></label>
@@ -89,7 +130,1089 @@
 </label>
 </div><div id="inventorySheet" style="margin-top:1rem; display:none; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:4px; padding:.25rem;"></div></div></div></div>
 <script>
-function exportInventoryText() {
+// ── Collision helpers ──
+// Returns the axis-aligned bounding box of a rotated rect
+function getRotatedBB(it) {
+  const θ    = it.angle * Math.PI/180;
+  const w    = it.w, h = it.h;
+  const rotW = Math.abs(w * Math.cos(θ)) + Math.abs(h * Math.sin(θ));
+  const rotH = Math.abs(w * Math.sin(θ)) + Math.abs(h * Math.cos(θ));
+  const cx   = it.x + w/2, cy = it.y + h/2;
+  return {
+    left:   cx - rotW/2,
+    right:  cx + rotW/2,
+    top:    cy - rotH/2,
+    bottom: cy + rotH/2
+  };
+}
+
+// Simple AABB overlap test on two rotated-BBs
+function isColliding(a, b) {
+  const A = getRotatedBB(a), B = getRotatedBB(b);
+  return !(
+    A.right  <= B.left  ||
+    A.left   >= B.right ||
+    A.bottom <= B.top   ||
+    A.top    >= B.bottom
+  );
+}
+/***** ── Constants & geometry ── *****/
+const SCALE = 5;                     // 1 inch → 5 pixels
+let ROOM_W_IN = 144, ROOM_H_IN = 120;
+const CLOSET_W_IN = 45,  CLOSET_H_IN = 24;
+const TOTAL_H_IN  = ROOM_H_IN + CLOSET_H_IN;
+let UNIT_W = ROOM_W_IN * SCALE;
+let UNIT_H = ROOM_H_IN * SCALE;
+const CLOSET_H_PX = 0; // no closet
+let CANVAS_H = ROOM_H_IN * SCALE; // no closet
+const PILLAR = 0; // no side pillars
+const LEFT_PILLAR_LEN = 50 * SCALE;  // left vertical pillar height
+const MEAS_VERT_IN = 33, MEAS_HORZ_IN = 39.5;
+const DOOR_W_IN = 30, DOOR_H_IN = 30;
+const DOOR_W_PX = DOOR_W_IN * SCALE, DOOR_H_PX = DOOR_H_IN * SCALE;
+const DOOR_X = 0, DOOR_Y = CLOSET_H_PX;
+
+/***** ── Helper utilities ── *****/
+const make = (label,w,h,x,y,color) => ({ note: '',
+  id: crypto.randomUUID(),
+  label,
+  w: w * SCALE,
+  h: h * SCALE,
+  x,
+  y,
+  color,
+  angle: 0,
+  alpha: 1
+});
+const inch = px => px / SCALE;
+const dimsTxt = it => `${inch(it.w).toFixed(2).replace(/\.00$/,'')}×${inch(it.h).toFixed(2).replace(/\.00$/,'')}″`;
+
+/***** ── Initial sample items ── *****/
+let items = (() => {
+  const raw = [
+    {
+      "label": "Small Table",
+      "width_in": 20,
+      "height_in": 20,
+      "x_in": 34.8,
+      "y_in": 62,
+      "color": "#deb887",
+      "angle": 0,
+      "alpha": 1,
+      "note": ""
+    },
+    {
+      "label": "Computer Chair",
+      "width_in": 27,
+      "height_in": 27,
+      "x_in": 104.8,
+      "y_in": 50.6,
+      "color": "#a7f3d0",
+      "angle": 0,
+      "alpha": 0.8,
+      "note": ""
+    },
+    {
+      "label": "Computer Desk",
+      "width_in": 48,
+      "height_in": 23.5,
+      "x_in": 90.2,
+      "y_in": 23,
+      "color": "#77715f",
+      "angle": 0,
+      "alpha": 0.95,
+      "note": ""
+    },
+    {
+      "label": "Cabinet",
+      "width_in": 42,
+      "height_in": 20,
+      "x_in": 24.2,
+      "y_in": 23.8,
+      "color": "#ffe4b5",
+      "angle": 0,
+      "alpha": 0.8,
+      "note": ""
+    }
+  ];
+  return raw.map(o => {
+    const it = make(o.label,o.width_in,o.height_in,o.x_in*SCALE,o.y_in*SCALE,o.color);
+    it.angle = o.angle || 0;
+    it.alpha = o.alpha ?? 1;
+    return it;
+  });
+})();
+  // Shift items up by closet height to remove blank space
+  items.forEach(it => { it.y = Math.max(0, it.y - CLOSET_H_PX); });
+
+/***** ── Canvas setup & shared state ── *****/
+const canvas = document.getElementById('stage');
+canvas.height = CANVAS_H;
+const ctx = canvas.getContext('2d');
+let selected = null;
+let drag = false;
+let offX = 0, offY = 0;
+const dims = it => (it.angle % 180 === 0 ? {w:it.w,h:it.h} : {w:it.h,h:it.w});
+
+/***** ── Drawing routine ── *****/
+function draw(){
+  ctx.clearRect(0,0,UNIT_W,CANVAS_H);
+  ctx.fillStyle = '#ffffff';  // solid white BG (for PNG)
+  ctx.fillRect(0,0,UNIT_W,CANVAS_H);
+
+  // closet & unusable strip
+
+  // door footprint
+  ctx.fillStyle='#1e293b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+
+  // gray pillar trims
+
+  // ── ruler & axis labels ──
+  if (document.getElementById('rulerToggle').checked) {
+    ctx.fillStyle    = '#1e293b';
+    ctx.font         = '10px sans-serif';
+
+    // — Top (inches) —
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'top';
+    for (let x = PILLAR; x <= UNIT_W - PILLAR; x += SCALE * 12) {
+      ctx.fillText(`${inch(x).toFixed(0)}″`, x, CLOSET_H_PX + 2);
+    }
+
+    // — Right (inches) —
+    ctx.textAlign    = 'right';
+    ctx.textBaseline = 'top';
+    for (let y = CLOSET_H_PX; y <= CANVAS_H; y += SCALE * 12) {
+      ctx.fillText(`${inch(y - CLOSET_H_PX).toFixed(0)}″`, UNIT_W - 4, y + 2);
+    }
+
+    // — Bottom (feet) —
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'bottom';
+    for (let x = PILLAR; x <= UNIT_W - PILLAR; x += SCALE * 12) {
+      const ft = (x / SCALE / 12).toFixed(0);
+      ctx.fillText(`${ft}′`, x, CANVAS_H - 2);
+    }
+
+	// — Left (feet) (moved inside) —
+	ctx.textAlign    = 'left';
+	ctx.textBaseline = 'middle';
+	for (let y = CLOSET_H_PX; y <= CANVAS_H; y += SCALE * 12) {
+	  const ft = ((y - CLOSET_H_PX) / SCALE / 12).toFixed(0);
+	  ctx.fillText(`${ft}′`, PILLAR + 4, y);
+    }
+  }
+
+
+// zone labels & measurement reference
+  ctx.fillStyle='#1e293b'; ctx.font='bold 16px sans-serif';
+  
+
+
+  // draw all items (in current z‑order)
+  for(const it of items){
+    ctx.save();
+    ctx.translate(it.x + it.w/2, it.y + it.h/2);
+    ctx.rotate(it.angle * Math.PI / 180);
+    ctx.globalAlpha = it.alpha;
+
+    ctx.fillStyle = it.color;
+    ctx.fillRect(-it.w/2, -it.h/2, it.w, it.h);
+    ctx.strokeStyle='#475569'; ctx.lineWidth=2;
+    ctx.strokeRect(-it.w/2, -it.h/2, it.w, it.h);
+
+    ctx.fillStyle='#000'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    const lines = [it.label, dimsTxt(it)];
+    
+lines.forEach((ln,i)=> ctx.fillText(ln, 0, (i-(lines.length-1)/2)*14));
+if (document.getElementById("noteToggle").checked && it.note) {
+  ctx.fillText(it.note, 0, ((lines.length + 1) * 14));
+}
+
+    if (document.getElementById("noteToggle").checked && it.note) {
+  
+}
+
+    if (it.note) {
+      
+    }
+
+    if (it.note) {
+      
+    }
+
+
+    ctx.restore();
+  }
+
+  // Closet measurement reference lines (overlaid and clearly visible)
+  if (document.getElementById('rulerToggle').checked) {
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+
+    // Horizontal measurement line at top of closet
+    ctx.beginPath();
+    ctx.moveTo(PILLAR, CLOSET_H_PX - 8);
+    ctx.lineTo(PILLAR + MEAS_HORZ_IN * SCALE, CLOSET_H_PX - 8);
+    ctx.stroke();
+
+    // Vertical measurement line at left of closet
+    ctx.beginPath();
+    ctx.lineTo(PILLAR - 8, CLOSET_H_PX + MEAS_VERT_IN * SCALE);
+    ctx.stroke();
+  }
+
+
+  // Feet axis labels for left (Y) and bottom (X)
+  if (document.getElementById('rulerToggle').checked) {
+    ctx.fillStyle = '#1e293b';
+    ctx.font = '10px sans-serif';
+
+    // Left (feet)
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let y = CLOSET_H_PX; y <= CANVAS_H; y += SCALE * 12) {
+      ctx.fillText(`${((y - CLOSET_H_PX)/SCALE/12).toFixed(0)}′`, PILLAR - 4, y);
+    }
+
+    // Bottom (feet)
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    for (let x = PILLAR; x <= UNIT_W - PILLAR; x += SCALE * 12) {
+      ctx.fillText(`${(x/SCALE/12).toFixed(0)}′`, x, CANVAS_H - PILLAR + 4);
+    }
+
+    // Unit Labels
+    ctx.font = 'bold 11px sans-serif';
+    ctx.save();
+    ctx.translate(PILLAR - 20, CLOSET_H_PX + UNIT_H / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.restore();
+
+    ctx.fillText('feet ↓', UNIT_W / 2, CANVAS_H - PILLAR + 16);
+    ctx.save();
+    ctx.translate(PILLAR - 28, CLOSET_H_PX + UNIT_H / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('feet ↓', 0, 0);
+    ctx.restore();
+  }
+
+
+  
+
+
+  // Feet axis labels for left (Y) and bottom (X)
+  if (document.getElementById('rulerToggle').checked) {
+    ctx.fillStyle = '#1e293b';
+    ctx.font = '10px sans-serif';
+
+    // Left (feet)
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let y = CLOSET_H_PX; y <= CANVAS_H; y += SCALE * 12) {
+      ctx.fillText(`${((y - CLOSET_H_PX)/SCALE/12).toFixed(0)}′`, PILLAR - 4, y);
+    }
+
+    // Bottom (feet)
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    for (let x = PILLAR; x <= UNIT_W - PILLAR; x += SCALE * 12) {
+      ctx.fillText(`${(x/SCALE/12).toFixed(0)}′`, x, CANVAS_H - PILLAR + 4);
+    }
+
+    // Unit Labels
+    ctx.font = 'bold 11px sans-serif';
+    ctx.save();
+    ctx.translate(PILLAR - 20, CLOSET_H_PX + UNIT_H / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.restore();
+
+    ctx.fillText('feet ↓', UNIT_W / 2, CANVAS_H - PILLAR + 16);
+    ctx.save();
+    ctx.translate(PILLAR - 28, CLOSET_H_PX + UNIT_H / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('feet ↓', 0, 0);
+    ctx.restore();
+  }
+
+
+  
+// --- Show Gaps Between Objects (strict 90° to rotated edges) ---
+if (selected && document.getElementById('gapToggle').checked) {
+  // styling
+  ctx.strokeStyle  = "#10b981";  // green
+  ctx.lineWidth    = 2;
+  ctx.fillStyle    = "#064e3b";
+  ctx.font         = "12px sans-serif";
+  ctx.textAlign    = "center";
+  ctx.textBaseline = "bottom";
+
+  // 1) build the 4-corner polygon of a rotated rect
+  function getPoly(it) {
+    const θ  = it.angle * Math.PI/180,
+          w  = it.w, h = it.h,
+          cx = it.x + w/2, cy = it.y + h/2,
+          pts = [
+            { x:-w/2, y:-h/2 },
+            { x: w/2, y:-h/2 },
+            { x: w/2, y: h/2 },
+            { x:-w/2, y: h/2 }
+          ];
+    return pts.map(p => ({
+      x: cx + p.x*Math.cos(θ) - p.y*Math.sin(θ),
+      y: cy + p.x*Math.sin(θ) + p.y*Math.cos(θ),
+    }));
+  }
+
+  // 2A) horizontal line → x-intersection points
+  function xIntersections(poly, y) {
+    const xs = [];
+    for (let i=0; i<poly.length; i++) {
+      const p1=poly[i], p2=poly[(i+1)%poly.length];
+      if ((p1.y<=y && p2.y>=y) || (p1.y>=y && p2.y<=y)) {
+        const t = (y - p1.y)/(p2.y - p1.y);
+        xs.push(p1.x + t*(p2.x - p1.x));
+      }
+    }
+    return xs.sort((a,b)=>a-b);
+  }
+
+  // 2B) vertical line → y-intersection points
+  function yIntersections(poly, x) {
+    const ys = [];
+    for (let i=0; i<poly.length; i++) {
+      const p1=poly[i], p2=poly[(i+1)%poly.length];
+      if ((p1.x<=x && p2.x>=x) || (p1.x>=x && p2.x<=x)) {
+        const t = (x - p1.x)/(p2.x - p1.x);
+        ys.push(p1.y + t*(p2.y - p1.y));
+      }
+    }
+    return ys.sort((a,b)=>a-b);
+  }
+
+  // global minimum gap in px
+  const minGapPx = (parseFloat(document.getElementById("walkwayMin").value)||0) * SCALE;
+
+  // poly & extents of the selected item
+  const polyA  = getPoly(selected),
+        yA     = polyA.map(p=>p.y), yMinA = Math.min(...yA), yMaxA = Math.max(...yA),
+        xA     = polyA.map(p=>p.x), xMinA = Math.min(...xA), xMaxA = Math.max(...xA);
+
+  // compare to every other item
+  items.forEach(it => {
+    if (it === selected) return;
+    const polyB  = getPoly(it),
+          yB     = polyB.map(p=>p.y), yMinB = Math.min(...yB), yMaxB = Math.max(...yB),
+          xB     = polyB.map(p=>p.x), xMinB = Math.min(...xB), xMaxB = Math.max(...xB);
+
+    // —— Horizontal gap (vertical overlap) ——
+    const y0 = Math.max(yMinA, yMinB),
+          y1 = Math.min(yMaxA, yMaxB);
+    if (y1 > y0) {
+      const midY = (y0 + y1)/2,
+            xsA  = xIntersections(polyA, midY),
+            xsB  = xIntersections(polyB, midY);
+      if (xsA.length>=2 && xsB.length>=2) {
+        const rightA = xsA[xsA.length-1],
+              leftB  = xsB[0];
+        // other is to the right?
+        if (leftB > rightA) {
+          ctx.beginPath();
+          ctx.moveTo(rightA, midY);
+          ctx.lineTo(leftB,  midY);
+          ctx.stroke();
+          ctx.fillText(`${((leftB-rightA)/SCALE).toFixed(1)}″`,
+                       (rightA+leftB)/2,
+                       midY - 4);
+        }
+        // or selected is to the right?
+        else {
+          const rightB = xsB[xsB.length-1],
+                leftA  = xsA[0];
+          if (leftA > rightB) {
+            ctx.beginPath();
+            ctx.moveTo(rightB, midY);
+            ctx.lineTo(leftA,  midY);
+            ctx.stroke();
+            ctx.fillText(`${((leftA-rightB)/SCALE).toFixed(1)}″`,
+                         (rightB+leftA)/2,
+                         midY - 4);
+          }
+        }
+      }
+    }
+
+    // —— Vertical gap (horizontal overlap) ——
+    const x0 = Math.max(xMinA, xMinB),
+          x1 = Math.min(xMaxA, xMaxB);
+    if (x1 > x0) {
+      const midX = (x0 + x1)/2,
+            ysA  = yIntersections(polyA, midX),
+            ysB  = yIntersections(polyB, midX);
+      if (ysA.length>=2 && ysB.length>=2) {
+        const bottomA = ysA[ysA.length-1],
+              topB    = ysB[0];
+        // other is below?
+        if (topB > bottomA) {
+          ctx.beginPath();
+          ctx.moveTo(midX, bottomA);
+          ctx.lineTo(midX, topB);
+          ctx.stroke();
+          ctx.fillText(`${((topB-bottomA)/SCALE).toFixed(1)}″`,
+                       midX + 4,
+                       (bottomA+topB)/2);
+        }
+        // or selected is below?
+        else {
+          const bottomB = ysB[ysB.length-1],
+                topA    = ysA[0];
+          if (topA > bottomB) {
+            ctx.beginPath();
+            ctx.moveTo(midX, bottomB);
+            ctx.lineTo(midX, topA);
+            ctx.stroke();
+            ctx.fillText(`${((topA-bottomB)/SCALE).toFixed(1)}″`,
+                         midX + 4,
+                         (bottomB+topA)/2);
+          }
+        }
+      }
+    }
+  });
+}
+updateSpace();
+drawMeasurement();
+drawWalkwayViolations();
+}
+
+/***** ── Space calculation ── *****/
+const spaceInfo = document.getElementById('spaceInfo');
+function updateSpace(){
+  const totalArea  = ROOM_W_IN*ROOM_H_IN + CLOSET_W_IN*CLOSET_H_IN;
+  const grayArea   = (3*TOTAL_H_IN) + (3*50) + (3*ROOM_W_IN) - 18; // rough pillar/trim
+  const furniture  = items.reduce((sum,it)=> sum + inch(it.w)*inch(it.h), 0);
+  const free       = Math.max(0, totalArea - grayArea - furniture);
+  spaceInfo.textContent = `Free space: ${(free/144).toFixed(1)} ft²  (${free.toFixed(0)} in²)`;
+}
+
+/***** ── Object list + editor ── *****/
+const listEl     = document.getElementById('objList');
+const editBox    = document.getElementById('edit');
+const nameInp    = document.getElementById('nameInp');
+const wInp       = document.getElementById('wInp');
+const hInp       = document.getElementById('hInp');
+const colInp     = document.getElementById('colInp');
+const alphaInp   = document.getElementById('alphaInp');
+
+function moveItem(idx,dir){
+  const newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= items.length) return;
+  const [it] = items.splice(idx,1);
+  items.splice(newIdx,0,it);
+  refreshList(); if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+}
+
+function refreshList(){
+  listEl.innerHTML='';
+  items.forEach((it,idx)=>{
+    const li = document.createElement('li');
+    li.className = it === selected ? 'active' : '';
+
+    const row = document.createElement('div'); row.className='row';
+    const sw  = document.createElement('span'); sw.className='swatch'; sw.style.background = it.color; row.appendChild(sw);
+    row.appendChild(document.createTextNode(it.label));
+
+    const up = document.createElement('button');  up.textContent='↑'; up.className='arrow'; up.disabled = idx===0; up.onclick = e=>{e.stopPropagation(); moveItem(idx,-1);};
+    const dn = document.createElement('button');  dn.textContent='↓'; dn.className='arrow'; dn.disabled = idx===items.length-1; dn.onclick = e=>{e.stopPropagation(); moveItem(idx,1);};
+    row.appendChild(up); row.appendChild(dn);
+
+    li.appendChild(row);
+    const dim = document.createElement('span'); dim.className='dim'; dim.textContent = dimsTxt(it); li.appendChild(dim);
+
+    li.onclick = ()=>{ selected = it; refreshList(); updateEditor(); if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw(); };
+    listEl.appendChild(li);
+  });
+}
+
+function updateEditor(){
+  if(!selected){ editBox.style.display='none'; return; }
+  editBox.style.display='flex';
+  nameInp.value  = selected.label;
+  wInp.value     = inch(selected.w).toFixed(2);
+  hInp.value     = inch(selected.h).toFixed(2);
+  colInp.value   = selected.color;
+  alphaInp.value = selected.alpha;
+  // keep the rotation box in sync
+  document.getElementById('rotationInput').value = selected.angle;
+}
+
+function applyChanges(){
+  if(!selected) return;
+  selected.label = nameInp.value.trim() || 'Unnamed';
+  selected.w     = parseFloat(wInp.value||0) * SCALE;
+  selected.h     = parseFloat(hInp.value||0) * SCALE;
+  selected.color = colInp.value;
+  selected.alpha = parseFloat(alphaInp.value);
+  if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw(); refreshList();
+}
+[nameInp,wInp,hInp,colInp,alphaInp].forEach(inp=> inp.oninput = applyChanges);
+
+document.getElementById('delObj').onclick = () => {
+  if(!selected) return;
+  items = items.filter(it=> it!==selected);
+  selected = null;
+  refreshList(); updateEditor(); if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+};
+
+document.getElementById('addObj').onclick = () => {
+  const base = make('New',12,12,UNIT_W/2,CLOSET_H_PX + UNIT_H/2,'#a7f3d0');
+  base.alpha = 0.8;
+  items.push(base);
+  selected = base;
+  refreshList(); updateEditor(); if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+};
+
+/***** ── Drag & hit‑testing ── *****/
+function hit(it,px,py){
+  const cx = it.x + it.w/2, cy = it.y + it.h/2;
+  const dx = px - cx, dy = py - cy;
+  const rad = -it.angle * Math.PI / 180;
+  const rx = dx*Math.cos(rad) - dy*Math.sin(rad);
+  const ry = dx*Math.sin(rad) + dy*Math.cos(rad);
+  return rx > -it.w/2 && rx < it.w/2 && ry > -it.h/2 && ry < it.h/2;
+}
+
+canvas.addEventListener('pointerdown',e=>{
+  const rect = canvas.getBoundingClientRect();
+  const px = e.clientX - rect.left;
+  const py = e.clientY - rect.top;
+  selected = null;
+  for(let i=items.length-1;i>=0;i--){
+    if(hit(items[i],px,py)){
+      selected = items[i];
+      offX = px - (selected.x + selected.w/2);
+      offY = py - (selected.y + selected.h/2);
+      drag = true;
+      break;
+    }
+  }
+  refreshList(); updateEditor(); if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+});
+
+canvas.addEventListener('pointermove', e => {
+  if (!drag || !selected) return;
+  const rect = canvas.getBoundingClientRect();
+  // compute desired center-clamped coords
+  let nx = e.clientX - rect.left - selected.w/2 - offX;
+  let ny = e.clientY - rect.top  - selected.h/2 - offY;
+
+  const θ    = selected.angle * Math.PI/180;
+  const w    = selected.w,   h = selected.h;
+  const rotW = Math.abs(w * Math.cos(θ)) + Math.abs(h * Math.sin(θ));
+  const rotH = Math.abs(w * Math.sin(θ)) + Math.abs(h * Math.cos(θ));
+  const halfW = rotW / 2, halfH = rotH / 2;
+
+  // clamp center inside canvas
+  let cx = Math.max(halfW, Math.min(nx + w/2, UNIT_W   - halfW));
+  let cy = Math.max(halfH, Math.min(ny + h/2, CANVAS_H - halfH));
+
+  // proposed new top-left
+  const newX = cx - w/2;
+  const newY = cy - h/2;
+
+  if (document.getElementById('collisionAvoidance').checked) {
+    // test collision
+    const oldX = selected.x, oldY = selected.y;
+    selected.x = newX;
+    selected.y = newY;
+    const collided = items.some(it => it !== selected && isColliding(selected, it));
+    if (collided) {
+      // rollback on overlap
+      selected.x = oldX;
+      selected.y = oldY;
+    }
+  } else {
+    // no avoidance: commit move
+    selected.x = newX;
+    selected.y = newY;
+  }
+
+  if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+  draw();
+});
+window.addEventListener('pointerup', () => {
+  if (drag && selected) {
+    // Snap to inch (position only)
+    if (document.getElementById('snapToInch').checked) {
+      selected.x = Math.round(selected.x / SCALE) * SCALE;
+      selected.y = Math.round(selected.y / SCALE) * SCALE;
+    }
+    // Snap to foot
+    else if (document.getElementById('snapToFoot').checked) {
+      const inc = SCALE * 12;
+      selected.x = Math.round(selected.x / inc) * inc;
+      selected.y = Math.round(selected.y / inc) * inc;
+    }
+
+    // ── NOW CLAMP SO IT NEVER EXITS THE CANVAS ──
+    // (uses the same rotated-bbox logic as your pointermove clamp)
+    const θ    = selected.angle * Math.PI/180;
+    const w    = selected.w, h = selected.h;
+    const rotW = Math.abs(w * Math.cos(θ)) + Math.abs(h * Math.sin(θ));
+    const rotH = Math.abs(w * Math.sin(θ)) + Math.abs(h * Math.cos(θ));
+    let cx = selected.x + w/2;
+    let cy = selected.y + h/2;
+    // keep the rotated box inside [0..UNIT_W] × [0..CANVAS_H]
+    cx = Math.max(rotW/2, Math.min(cx, UNIT_W   - rotW/2));
+    cy = Math.max(rotH/2, Math.min(cy, CANVAS_H - rotH/2));
+    selected.x = cx - w/2;
+    selected.y = cy - h/2;
+    // ─────────────────────────────────────────────
+  }
+
+  drag = false;
+  draw();
+});
+
+saveLayout.onclick = ()=>{
+  const json = JSON.stringify(items.map(it=>({
+    label:it.label,
+    width_in:inch(it.w),
+    height_in:inch(it.h),
+    x_in:inch(it.x),
+    y_in:inch(it.y),
+    color:it.color,
+    angle:it.angle,
+    alpha:it.alpha, note:it.note || ""
+  })),null,2);
+  const blob = new Blob([json],{type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'bedroom-layout.json'; a.click();
+  URL.revokeObjectURL(url);
+};
+
+loadLayout.onclick = ()=> fileInput.click();
+fileInput.onchange = e =>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = evt => {
+    let arr;
+    try {
+      arr = JSON.parse(evt.target.result);
+      if(!Array.isArray(arr)) throw new Error('Root is not array');
+    } catch(err){
+      alert('Invalid layout file – please choose a JSON created via “Save Layout”.');
+      return;
+    }
+
+    items = arr.map(o=> make(
+      o.label || 'Item',
+      +o.width_in   || 12,
+      +o.height_in  || 12,
+      (+o.x_in || 0)*SCALE,
+      (+o.y_in || 0)*SCALE,
+      o.color || '#ddd'
+    ));
+    items.forEach((it,i)=>{ it.note = arr[i].note || "";
+      it.angle = +arr[i].angle || 0;
+      it.alpha = arr[i].alpha ?? 1;
+    });
+
+    selected = null;
+    refreshList(); updateEditor(); if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+  };
+  reader.readAsText(file);
+  fileInput.value = '';
+};
+
+/***** ── Kick everything off ── *****/
+refreshList(); if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+
+// --- Preset color buttons ---
+document.querySelectorAll(".presetColor").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (selected) {
+      selected.color = btn.dataset.color;
+      colInp.value = btn.dataset.color;
+      if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+      refreshList();
+    }
+  });
+});
+
+// Add note field to object model and editor
+const noteInp = document.getElementById('noteInp');
+noteInp.oninput = () => {
+  if (selected) {
+    selected.note = noteInp.value.trim();
+    if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+  }
+};
+
+function updateEditor(){
+  if(!selected){ editBox.style.display='none'; return; }
+  editBox.style.display='flex';
+  nameInp.value  = selected.label;
+  wInp.value     = inch(selected.w).toFixed(2);
+  hInp.value     = inch(selected.h).toFixed(2);
+  colInp.value   = selected.color;
+  alphaInp.value = selected.alpha;
+  noteInp.value  = selected.note || '';
+
+  // ← keep the rotation picker in sync
+  document.getElementById('rotationInput').value = selected.angle;
+}
+
+// --- Redraw on note toggle ---
+document.getElementById("noteToggle").addEventListener("change", draw);
+
+
+let measureStart = null;
+let measureEnd = null;
+let measuring = false;
+
+canvas.addEventListener("pointerdown", e => {
+  if (!document.getElementById("measureToggle").checked) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  if (!measuring) {
+    measureStart = {x, y};
+    measureEnd = null;
+    measuring = true;
+  } else {
+    measureEnd = {x, y};
+    measuring = false;
+    if (document.getElementById("walkwayLiveToggle").checked) drawWalkwayViolations(true);
+draw();
+  }
+});
+
+function drawMeasurement() {
+  if (!document.getElementById("measureToggle").checked) return;
+  if (!measureStart || !measureEnd) return;
+
+  const dx     = measureEnd.x - measureStart.x;
+  const dy     = measureEnd.y - measureStart.y;
+  const distPx = Math.sqrt(dx*dx + dy*dy);
+  const distIn = inch(distPx);
+  const distFt = distIn / 12;
+
+  // ← set the line color to red
+  ctx.strokeStyle = "red";
+  ctx.lineWidth   = 2;
+  ctx.beginPath();
+  ctx.moveTo(measureStart.x, measureStart.y);
+  ctx.lineTo(measureEnd.x,   measureEnd.y);
+  ctx.stroke();
+
+  // keep the text styling as-is (black)
+  ctx.fillStyle    = "#000";
+  ctx.font         = "12px sans-serif";
+  ctx.textAlign    = "center";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(
+    `${distIn.toFixed(1)}″ (${distFt.toFixed(2)}′)`,
+    (measureStart.x + measureEnd.x) / 2,
+    (measureStart.y + measureEnd.y) / 2 - 6
+  );
+}
+
+
+function drawWalkwayViolations(live = false) {
+  if (!document.getElementById("walkwayToggle").checked && !live) return;
+  if (!selected) return;
+
+  const minGapIn = parseFloat(document.getElementById("walkwayMin").value) || 0;
+  const minGapPx = minGapIn * SCALE;
+
+  ctx.strokeStyle  = "#f97316";
+  ctx.lineWidth    = 2;
+  ctx.fillStyle    = "#f97316";
+  ctx.font         = "12px sans-serif";
+  ctx.textAlign    = "center";
+  ctx.textBaseline = "bottom";
+
+  // 1) Build a 4-corner polygon for item `it`
+  function getPoly(it) {
+    const θ  = it.angle * Math.PI/180,
+          w  = it.w, h = it.h,
+          cx = it.x + w/2, cy = it.y + h/2;
+    return [
+      { x: -w/2, y: -h/2 },
+      { x:  w/2, y: -h/2 },
+      { x:  w/2, y:  h/2 },
+      { x: -w/2, y:  h/2 },
+    ].map(p => ({
+      x: cx + p.x*Math.cos(θ) - p.y*Math.sin(θ),
+      y: cy + p.x*Math.sin(θ) + p.y*Math.cos(θ),
+    }));
+  }
+
+  // 2) Standard “closest between two line segments” in 2D
+  function closestSegmentPoints(p0, p1, q0, q1) {
+    const u = { x: p1.x - p0.x, y: p1.y - p0.y };
+    const v = { x: q1.x - q0.x, y: q1.y - q0.y };
+    const w = { x: p0.x - q0.x, y: p0.y - q0.y };
+    const a = u.x*u.x + u.y*u.y;              // |u|^2
+    const b = u.x*v.x + u.y*v.y;              // u·v
+    const c = v.x*v.x + v.y*v.y;              // |v|^2
+    const d = u.x*w.x + u.y*w.y;              // u·w
+    const e = v.x*w.x + v.y*w.y;              // v·w
+    const D = a*c - b*b;                      // always ≥ 0
+    let sc, sN = D, sD = D;                   // sc = sN/sD
+    let tc, tN = D, tD = D;                   // tc = tN/tD
+
+    // parallel lines case
+    if (D < 1e-8) {
+      sN = 0; sD = 1; tN = e; tD = c;
+    } else {
+      sN =  b*e - c*d;
+      tN =  a*e - b*d;
+      if (sN < 0)     { sN = 0;      tN = e;  tD = c; }
+      else if (sN > sD){ sN = sD;     tN = e+b; tD = c; }
+    }
+    // clamp tc
+    if (tN < 0) {
+      tN = 0;
+      if      (-d < 0) sN = 0;
+      else if (-d > a) sN = sD;
+      else { sN = -d; sD = a; }
+    } else if (tN > tD) {
+      tN = tD;
+      if      ((-d + b) < 0)  sN = 0;
+      else if ((-d + b) > a)  sN = sD;
+      else { sN = (-d + b); sD = a; }
+    }
+
+    sc = Math.abs(sN) < 1e-8 ? 0 : sN / sD;
+    tc = Math.abs(tN) < 1e-8 ? 0 : tN / tD;
+
+    const p = { x: p0.x + sc*u.x, y: p0.y + sc*u.y };
+    const q = { x: q0.x + tc*v.x, y: q0.y + tc*v.y };
+    const dx = p.x - q.x, dy = p.y - q.y;
+
+    return { p, q, dist: Math.sqrt(dx*dx + dy*dy) };
+  }
+
+  // 3) For two polygons, find their absolute closest points
+  function closestBetweenPolys(polyA, polyB) {
+    let best = { dist: Infinity, p: null, q: null };
+    for (let i = 0; i < polyA.length; i++) {
+      const p0 = polyA[i], p1 = polyA[(i+1)%polyA.length];
+      for (let j = 0; j < polyB.length; j++) {
+        const q0 = polyB[j], q1 = polyB[(j+1)%polyB.length];
+        const c = closestSegmentPoints(p0,p1, q0,q1);
+        if (c.dist < best.dist) best = c;
+      }
+    }
+    return best;
+  }
+
+  const polyA = getPoly(selected);
+
+  // 4) Compare selected → every other item
+  for (const it of items) {
+    if (it === selected) continue;
+    const polyB = getPoly(it);
+    const { p, q, dist } = closestBetweenPolys(polyA, polyB);
+
+    if (dist > 0 && dist < minGapPx) {
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(q.x, q.y);
+      ctx.stroke();
+
+      // label at midpoint
+      const mx = (p.x + q.x)/2,
+            my = (p.y + q.y)/2;
+      ctx.fillText(`${(dist/SCALE).toFixed(1)}″`, mx, my - 4);
+    }
+  }
+
+  ctx.setLineDash([]);
+}
+
+
+document.getElementById("exportInventory").addEventListener("click", () => {
+  const container = document.getElementById("inventorySheet");
+  container.innerHTML = "";
+
+  const table = document.createElement("table");
+  table.style.borderCollapse = "collapse";
+  table.style.width = "100%";
+  table.style.marginTop = "0.5rem";
+
+  const headers = ["Label", "Width (in)", "Height (in)", "Color", "Notes"];
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  headers.forEach(h => {
+    const th = document.createElement("th");
+    th.textContent = h;
+    th.style.border = "1px solid #ccc";
+    th.style.padding = "4px";
+    th.style.background = "#f1f5f9";
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  items.forEach(it => {
+    const row = document.createElement("tr");
+    const dims = it => {
+      const scale = 1 / SCALE;
+      return {
+        w: it.w * scale,
+        h: it.h * scale
+      };
+    };
+    const d = dims(it);
+    const cells = [
+      it.label || "",
+      inch(it.w).toFixed(1),
+      inch(it.h).toFixed(1),
+      it.color || "",
+      it.note || ""
+    ];
+    
+    cells.forEach((text, idx) => {
+      const td = document.createElement("td");
+      if (idx === 3) {
+        td.innerHTML = `<span style='display:inline-block;width:100%;background:${text};padding:2px;border-radius:2px;color:#0f172a;text-align:center;font-size:.75rem'>${text}</span>`;
+      } else {
+        td.textContent = text;
+      }
+      td.style.border = "1px solid #ccc";
+      td.style.padding = "4px";
+      row.appendChild(td);
+    });
+
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  container.appendChild(table);
+  container.style.display = "block";
+});
+
+
+document.getElementById("rulerToggle").addEventListener("change", () => {
+  draw();
+});
+
+
+document.getElementById("downloadInventory").addEventListener("click", () => {
+  const w = window.open("", "_blank");
+  const rows = items.map(it => {
+    const colorCell = `<td><div style='background:${it.color};padding:4px;border-radius:3px;text-align:center;'>${it.color}</div></td>`;
+    return `
+      <tr>
+        <td>${it.label || ""}</td>
+        <td>${inch(it.w).toFixed(1)}</td>
+        <td>${inch(it.h).toFixed(1)}</td>
+        ${colorCell}
+        <td>${it.note || ""}</td>
+      </tr>
+    `;
+  }).join("");
+
+  const html = `
+    <html>
+    <head>
+      <title>Inventory Sheet</title>
+      <style>
+        body { font-family: sans-serif; padding: 2rem; }
+        table { border-collapse: collapse; width: 100%; font-size: 12px; }
+        th, td { border: 1px solid #ccc; padding: 4px; }
+        th { background: #f1f5f9; }
+        h2 { margin-bottom: 1rem; }
+      </style>
+    </head>
+    <body>
+      <h2>Inventory Sheet</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Label</th><th>Width (in)</th><th>Height (in)</th><th>Color</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </body>
+    </html>
+  `;
+
+  w.document.write(html);
+  w.document.close();
+});
+
+document.getElementById("exportInventory").addEventListener("click", () => {
+  const container = document.getElementById("inventorySheet");
+  container.innerHTML = "";
+
+  const table = document.createElement("table");
+  table.style.borderCollapse = "collapse";
+  table.style.width = "100%";
+
+  const headers = ["Label", "Width (in)", "Height (in)", "Color", "Notes"];
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  headers.forEach(h => {
+    const th = document.createElement("th");
+    th.textContent = h;
+    th.style.border = "1px solid #ccc";
+    th.style.padding = "4px";
+    th.style.background = "#f1f5f9";
+    th.style.fontSize = "12px";
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  items.forEach(it => {
+    const row = document.createElement("tr");
+    const cells = [
+      it.label || "",
+      inch(it.w).toFixed(1),
+      inch(it.h).toFixed(1),
+      it.color || "",
+      it.note || ""
+    ];
+    cells.forEach((text, idx) => {
+      const td = document.createElement("td");
+      td.style.border = "1px solid #ccc";
+      td.style.padding = "4px";
+      td.style.fontSize = "11px";
+      if (idx === 3) {
+        td.innerHTML = `<span style='display:inline-block;width:100%;background:${text};padding:2px;border-radius:2px;color:#0f172a;text-align:center;'>${text}</span>`;
+      } else {
+        td.textContent = text;
+      }
+      row.appendChild(td);
+    });
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  container.appendChild(table);
+  container.style.display = "block";
+  document.getElementById("downloadInventory").disabled = false;
+});
+
+document.getElementById("downloadInventory").addEventListener("click", () => {
   if (!items || items.length === 0) {
     alert("No inventory items to export.");
     return;
@@ -106,14 +1229,167 @@ function exportInventoryText() {
   }
 
   const blob = new Blob([text], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url;
+  a.href = URL.createObjectURL(blob);
   a.download = "InventorySheet.txt";
-  document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  URL.revokeObjectURL(a.href);
+});
+
+
+let canvasZoom = 1;
+let panX = 0;
+let panY = 0;
+let isPanning = false;
+let startX = 0;
+let startY = 0;
+
+function redrawCanvas() {
+  ctx.setTransform(canvasZoom, 0, 0, canvasZoom, panX, panY);
+  ctx.clearRect(-panX / canvasZoom, -panY / canvasZoom, canvas.width / canvasZoom, canvas.height / canvasZoom);
+  originalDraw();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
+
+document.getElementById("zoomIn").addEventListener("click", () => {
+  canvasZoom = Math.min(3, canvasZoom + 0.1);
+  redrawCanvas();
+});
+document.getElementById("zoomOut").addEventListener("click", () => {
+  canvasZoom = Math.max(0.2, canvasZoom - 0.1);
+  redrawCanvas();
+});
+document.getElementById("zoomReset").addEventListener("click", () => {
+  canvasZoom = 1;
+  panX = 0;
+  panY = 0;
+  redrawCanvas();
+});
+
+canvas.addEventListener("mousedown", (e) => {
+  if (canvasZoom <= 1) return;
+  isPanning = true;
+  startX = e.clientX;
+  startY = e.clientY;
+});
+canvas.addEventListener("mousemove", (e) => {
+  if (!isPanning) return;
+  panX += (e.clientX - startX);
+  panY += (e.clientY - startY);
+  startX = e.clientX;
+  startY = e.clientY;
+  redrawCanvas();
+});
+canvas.addEventListener("mouseup", () => { isPanning = false; });
+canvas.addEventListener("mouseleave", () => { isPanning = false; });
+
+// Safe override after base script loads
+window.addEventListener("load", () => {
+  if (typeof draw === "function") {
+    window.originalDraw = draw;
+    draw = () => redrawCanvas();
+    draw();
+  }
+});
+
+
+// Prevent drag-object interference while panning or zoomed
+const origMouseDown = canvas.onmousedown;
+const origMouseMove = canvas.onmousemove;
+const origMouseUp = canvas.onmouseup;
+
+canvas.onmousedown = (e) => {
+  if (canvasZoom > 1) {
+    isPanning = true;
+    startX = e.clientX;
+    startY = e.clientY;
+  } else if (typeof origMouseDown === "function") {
+    origMouseDown(e);
+  }
+};
+
+canvas.onmousemove = (e) => {
+  if (isPanning) {
+    panX += (e.clientX - startX);
+    panY += (e.clientY - startY);
+    startX = e.clientX;
+    startY = e.clientY;
+    redrawCanvas();
+  } else if (typeof origMouseMove === "function" && canvasZoom === 1) {
+    origMouseMove(e);
+  }
+};
+
+canvas.onmouseup = (e) => {
+  isPanning = false;
+  if (canvasZoom === 1 && typeof origMouseUp === "function") {
+    origMouseUp(e);
+  }
+};
+canvas.addEventListener("mouseleave", () => {
+  isPanning = false;
+});
+
+
+const isLocked = () => document.getElementById("lockObjects")?.checked === true;
+
+// Intercept only hit selection if locked
+const realHit = hit;
+hit = function(obj, x, y) {
+  if (isLocked()) return false;
+  return realHit(obj, x, y);
+};
+
+// Suppress drag apply if locked
+const originalPointerMove = canvas.onpointermove;
+canvas.addEventListener("pointermove", e => {
+  if (!isLocked() && typeof originalPointerMove === "function") originalPointerMove(e);
+});
+// ===== Dynamic room sizing =====
+function recalcDims() {
+  UNIT_W = ROOM_W_IN * SCALE;
+  UNIT_H = ROOM_H_IN * SCALE;
+  CANVAS_H = UNIT_H;
+  canvas.width = UNIT_W;
+  canvas.height = CANVAS_H;
+}
+function applyRoomSize(){
+  const wFt = parseFloat(document.getElementById('roomW').value||12);
+  const hFt = parseFloat(document.getElementById('roomH').value||10);
+  ROOM_W_IN = wFt*12;
+  ROOM_H_IN = hFt*12;
+  recalcDims();
+  draw();
+}
+document.getElementById('applyRoom').addEventListener('click', applyRoomSize);
+
+  // make Snap-Inch and Snap-Foot un-check each other
+  const inchCB = document.getElementById('snapToInch');
+  const footCB = document.getElementById('snapToFoot');
+  inchCB.addEventListener('change', () => { if (inchCB.checked) footCB.checked = false; });
+  footCB.addEventListener('change', () => { if (footCB.checked) inchCB.checked = false; });
+
+const rotInput = document.getElementById('rotationInput');
+
+// whenever they type/change the angle…
+rotInput.addEventListener('input', () => {
+  if (!selected) return;              // nothing to rotate
+  // clamp & normalize:
+  let a = parseFloat(rotInput.value) || 0;
+  selected.angle = ((a % 360) + 360) % 360;
+  draw();                             // redraw canvas
+  refreshList();                      // update sidebar list highlight
+  updateEditor();                     // if you have a properties panel
+});
+// Rotation object reset
+document.getElementById('resetRotation').addEventListener('click', () => {
+  if (!selected) return;
+  selected.angle = 0;
+  rotInput.value = 0;
+  draw();
+  refreshList();
+  updateEditor();
+});
+
 </script>
 </body></html>
