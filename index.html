@@ -2,7 +2,7 @@
 
 <!-- saved from url=(0052)https://cestlaviesisyphus.github.io/Bedroom-Planner/ -->
 <html lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-<title>Bedroom Layout Planner – v12.2.2</title>
+<title>Bedroom Layout Planner – v12.2.5</title>
 <style>
     /* ——— Layout & basic UI ——— */
     *{box-sizing:border-box}
@@ -34,7 +34,7 @@
 <body>
 <!-- ── Main column (canvas & global buttons) ── -->
 <div style="display:flex;flex-direction:column;align-items:center;gap:.75rem">
-<h1 style="font-size:1.25rem;margin:0;font-weight:600">Bedroom Layout Planner v12.2.2<br/>(12 × 10 ft room • 45 × 24 in closet)</h1>
+<h1 style="font-size:1.25rem;margin:0;font-weight:600">Bedroom Layout Planner v12.2.5<br/>(12 × 10 ft room • 45 × 24 in closet)</h1>
 <canvas height="720" id="stage" width="720"></canvas>
 <div style="display:flex;gap:.75rem">
 <button id="savePng">Save PNG</button>
@@ -74,7 +74,7 @@
 <input checked="" id="noteToggle" type="checkbox"/> Show Object Notes
 </label></fieldset>
 <div id="spaceInfo">Free space: 59.8 ft²  (8604 in²)</div>
-<div style="margin-top:.75rem; display:flex; gap:.5rem; padding:.5rem; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.5rem;"></div><div id="inventorySheet" style="margin-top:1rem; display:none; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:4px; padding:.25rem;"></div><div style="margin-top:.75rem; display:flex; gap:.5rem; padding:.5rem; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.5rem;"><button id="exportInventory" style="padding:.5rem; background:#2563eb; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Generate Inventory Sheet</button><button disabled="true" id="downloadInventory" style="padding:.5rem; background:#0f766e; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Open Inventory in New Tab</button></div></div><div style="display:flex;flex-direction:column;gap:1rem;align-items:flex-start"><div id="edit" style="display:none; flex-direction:column; gap:.5rem; border:1px solid #e2e8f0; border-radius:.5rem; padding:.75rem; min-width:220px">
+<div style="margin-top:.75rem; display:flex; gap:.5rem; padding:.5rem; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.5rem;"><button id="exportInventory" style="padding:.5rem; background:#2563eb; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Generate Inventory Sheet</button><button disabled="true" id="downloadInventory" style="padding:.5rem; background:#0f766e; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Open Inventory in New Tab</button></div></div><div style="display:flex;flex-direction:column;gap:1rem;align-items:flex-start"><div id="edit" style="display:none; flex-direction:column; gap:.5rem; border:1px solid #e2e8f0; border-radius:.5rem; padding:.75rem; min-width:220px">
 <h2 style="font-size:1rem">Edit Selected</h2>
 <label>Name <input id="nameInp"/></label>
 <label>Width (in) <input id="wInp" step="0.25" type="number"/></label>
@@ -87,7 +87,7 @@
 <label style="font-size:.85rem;color:#0f172a;display:flex;align-items:center;gap:.5rem">
 <input checked="" id="rulerToggle" type="checkbox"/> Show Ruler/Grid Labels
 </label>
-</div><button id="exportInventory" style="margin-top:.75rem; padding:.5rem; background:#2563eb; color:white; border:none; border-radius:4px; font-size:.85rem; cursor:pointer">Generate Inventory Sheet</button><div id="inventorySheet" style="margin-top:1rem; display:none; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:4px; padding:.25rem;"></div></div></div></div>
+</div><div id="inventorySheet" style="margin-top:1rem; display:none; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:4px; padding:.25rem;"></div></div></div></div>
 <script>
 /***** ── Constants & geometry ── *****/
 const SCALE = 5;                     // 1 inch → 5 pixels
