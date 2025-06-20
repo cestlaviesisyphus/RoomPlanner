@@ -131,30 +131,53 @@
 </div><div id="inventorySheet" style="margin-top:1rem; display:none; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:4px; padding:.25rem;"></div></div></div></div>
 <script>
 // ── Collision helpers ──
-// Returns the axis-aligned bounding box of a rotated rect
-function getRotatedBB(it) {
-  const θ    = it.angle * Math.PI/180;
-  const w    = it.w, h = it.h;
-  const rotW = Math.abs(w * Math.cos(θ)) + Math.abs(h * Math.sin(θ));
-  const rotH = Math.abs(w * Math.sin(θ)) + Math.abs(h * Math.cos(θ));
-  const cx   = it.x + w/2, cy = it.y + h/2;
-  return {
-    left:   cx - rotW/2,
-    right:  cx + rotW/2,
-    top:    cy - rotH/2,
-    bottom: cy + rotH/2
-  };
+// ── Polygon helper (for any rotated rect) ──
+function getPoly(it) {
+  const θ  = it.angle * Math.PI/180,
+        w  = it.w, h = it.h,
+        cx = it.x + w/2, cy = it.y + h/2;
+  return [
+    { x: -w/2, y: -h/2 },
+    { x:  w/2, y: -h/2 },
+    { x:  w/2, y:  h/2 },
+    { x: -w/2, y:  h/2 },
+  ].map(p => ({
+    x: cx + p.x*Math.cos(θ) - p.y*Math.sin(θ),
+    y: cy + p.x*Math.sin(θ) + p.y*Math.cos(θ),
+  }));
 }
 
-// Simple AABB overlap test on two rotated-BBs
+// ── SAT-based polygon intersection ──
+function doPolygonsIntersect(a, b) {
+  for (const poly of [a, b]) {
+    for (let i = 0; i < poly.length; i++) {
+      const i2 = (i + 1) % poly.length;
+      const p1 = poly[i], p2 = poly[i2];
+      // perpendicular axis
+      const axis = { x: p2.y - p1.y, y: p1.x - p2.x };
+
+      let [minA, maxA] = [Infinity, -Infinity];
+      for (const p of a) {
+        const proj = p.x*axis.x + p.y*axis.y;
+        minA = Math.min(minA, proj); maxA = Math.max(maxA, proj);
+      }
+
+      let [minB, maxB] = [Infinity, -Infinity];
+      for (const p of b) {
+        const proj = p.x*axis.x + p.y*axis.y;
+        minB = Math.min(minB, proj); maxB = Math.max(maxB, proj);
+      }
+
+      // if there’s a gap, no collision
+      if (maxA < minB || maxB < minA) return false;
+    }
+  }
+  return true;
+}
+
+// ── Replace old isColliding with this ──
 function isColliding(a, b) {
-  const A = getRotatedBB(a), B = getRotatedBB(b);
-  return !(
-    A.right  <= B.left  ||
-    A.left   >= B.right ||
-    A.bottom <= B.top   ||
-    A.top    >= B.bottom
-  );
+  return doPolygonsIntersect( getPoly(a), getPoly(b) );
 }
 /***** ── Constants & geometry ── *****/
 const SCALE = 5;                     // 1 inch → 5 pixels
